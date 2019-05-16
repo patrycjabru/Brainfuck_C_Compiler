@@ -1,0 +1,17 @@
+PLUS=1
+MINUS=2
+GREATER=3
+LOWER=4
+DOT=5
+COMMA=6
+OPEN=7
+CLOSE=8
+WS=9
+'+'=1
+'-'=2
+'>'=3
+'<'=4
+'.'=5
+','=6
+'['=7
+']'=8
