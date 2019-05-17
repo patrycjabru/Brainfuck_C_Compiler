@@ -1,3 +1,4 @@
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,10 +26,19 @@ public class Application {
         String sourceFile = "result.c";
 
         FileWriter writer = new FileWriter(sourceFile);
+        BufferedWriter bufferedWriter = new BufferedWriter(writer);
+
+
         ParseTree parseTree = parser.file();
         // Add listener
-        brainfuckVisitor visitor = new brainfuckBaseVisitor();
-        visitor.visit(parseTree);
+//        brainfuckVisitor visitor = new brainfuckBaseVisitor();
+//        visitor.visit(parseTree);
+
+        BrainfuckListenerImpl listener = new BrainfuckListenerImpl(bufferedWriter);
+        ParseTreeWalker walker = new ParseTreeWalker();
+        walker.walk(listener,parseTree);
+
+        bufferedWriter.close();
 
         System.out.println();
         System.out.println(parseTree.toStringTree(parser)); // print LISP-style tree
