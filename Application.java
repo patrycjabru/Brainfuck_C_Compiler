@@ -7,14 +7,15 @@ import gen.brainfuckVisitor;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
-public class Application {
+public class Application{
     public static void main(String[] args) throws IOException {
         // Get our lexer
 
 
-        System.out.println("Odczyt pliku");
+        //System.out.println("Odczyt pliku");
         BufferedReader fileReader = null;
-        String filePath = "D:\\Informatyka III\\kompilatory\\file.bf";
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));;
+        String filePath=br.readLine();
         String testString;
         try {
             fileReader = new BufferedReader(new FileReader(filePath));
@@ -34,8 +35,10 @@ public class Application {
         // Pass the tokens to the parser
         brainfuckParser parser = new brainfuckParser(tokens);
 
-        String resultPath="D:\\Informatyka III\\kompilatory\\";
+
         int number=1;
+
+        String resultPath=br.readLine();
         String nameFile = resultPath+"result.c";
           File sourceFile = new File(nameFile);
 
