@@ -1,47 +1,41 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-
-import gen.brainfuckBaseVisitor;
-import gen.brainfuckLexer;
-import gen.brainfuckParser;
-import gen.brainfuckVisitor;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
+import java.io.*;
 
 public class Application {
-    public static void main(String[] args) throws IOException {
-        // Get our lexer
-        String testString = "+[-[<<[+[--->]-[<<<]]]>>>-]>-.---.>..>.<<<<-.<+.>>>>>.>.<<.<-.";
-        CharStream testStream = new ANTLRInputStream(testString);
-        brainfuckLexer lexer = new brainfuckLexer(testStream);
+    public static void main(String[] args){
+        System.out.println("Starting...");
+        String testString;
+        try {
+            testString = FileManager.readFromFile(args[0]);
+        } catch (FileNotFoundException e) {
+            System.out.println("File with source code does not exist in current location: " + args[0]);
+            return;
+        }
 
-        // Get a list of matched tokens
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        System.out.println("Source code has been read successfully: " + args[0]);
 
-        // Pass the tokens to the parser
-        brainfuckParser parser = new brainfuckParser(tokens);
+        BufferedWriter bufferedWriter;
+        try {
+            bufferedWriter = FileManager.prepareOuputFile(args[1]);
+        } catch (IOException e) {
+            System.out.println("An error occurred while preparing the output file: " + args[1]);
+            return;
+        }
 
-        String sourceFile = "result.c";
+        System.out.println("Output file has been prepared successfully: " + args[1]);
 
-        FileWriter writer = new FileWriter(sourceFile);
-        BufferedWriter bufferedWriter = new BufferedWriter(writer);
+        System.out.println("Beginning compilation...");
 
+        Compiler.compile(testString, bufferedWriter);
 
-        ParseTree parseTree = parser.file();
-        // Add listener
-//        brainfuckVisitor visitor = new brainfuckBaseVisitor();
-//        visitor.visit(parseTree);
+        System.out.println("Compilation completed successfully");
 
-        BrainfuckListenerImpl listener = new BrainfuckListenerImpl(bufferedWriter);
-        ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(listener,parseTree);
-
-        bufferedWriter.close();
-
-        System.out.println();
-        System.out.println(parseTree.toStringTree(parser)); // print LISP-style tree
-
+        try {
+            bufferedWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while closing the output file");
+            e.printStackTrace();
+        }
     }
+
+
 }

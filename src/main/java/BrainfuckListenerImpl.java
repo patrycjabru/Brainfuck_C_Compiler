@@ -9,10 +9,12 @@ import java.io.IOException;
 
 public class BrainfuckListenerImpl implements brainfuckListener {
     private BufferedWriter writer;
-    int indents = 0;
+    private int indents = 0;
+    private int size;
 
-    public BrainfuckListenerImpl(BufferedWriter bufferedWriter) {
+    public BrainfuckListenerImpl(BufferedWriter bufferedWriter, int size) {
         this.writer = bufferedWriter;
+        this.size = size;
     }
 
     private void putIndents() {
@@ -32,7 +34,7 @@ public class BrainfuckListenerImpl implements brainfuckListener {
             writer.write("{\n");
             indents++;
             putIndents();
-            writer.write("char array[100] = {0};\n");
+            writer.write("char array["+size+"] = {0};\n");
             putIndents();
             writer.write("char *ptr=array;\n");
         } catch (IOException e) {
