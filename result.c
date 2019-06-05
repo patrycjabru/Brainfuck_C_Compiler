@@ -2,7 +2,7 @@
  
 int main()
 {
-	char array[29] = {0};
+	char array[1024] = {0};
 	char *ptr=array;
 	++*ptr;
 	++*ptr;

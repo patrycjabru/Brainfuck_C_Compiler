@@ -3,9 +3,17 @@ import java.io.*;
 public class Application {
     public static void main(String[] args){
         System.out.println("Starting...");
+
+        String inputFile = args[0];
+        if (inputFile == null)
+            inputFile = "source.bf";
+        String outputFile = args[1];
+        if (outputFile == null)
+            outputFile = "result.c";
+
         String testString;
         try {
-            testString = FileManager.readFromFile(args[0]);
+            testString = FileManager.readFromFile(inputFile);
         } catch (FileNotFoundException e) {
             System.out.println("File with source code does not exist in current location: " + args[0]);
             return;
@@ -15,7 +23,7 @@ public class Application {
 
         BufferedWriter bufferedWriter;
         try {
-            bufferedWriter = FileManager.prepareOuputFile(args[1]);
+            bufferedWriter = FileManager.prepareOuputFile(outputFile);
         } catch (IOException e) {
             System.out.println("An error occurred while preparing the output file: " + args[1]);
             return;

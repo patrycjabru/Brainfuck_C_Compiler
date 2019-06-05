@@ -20,13 +20,10 @@ public class Compiler {
         ParseTree parseTree = parser.file();
 
         System.out.println("Parsing completed successfully");
-
-        System.out.println("Counting size of array...");
-        int size = countArraySize(parseTree)*14+1;
-        System.out.println("Size of array: " + size);
         
         System.out.println("Beginning code generation...");
 
+        int size = 1024;
         generateOutputCode(writer, parseTree, size);
 
         System.out.println("Code generation completed successfully");
@@ -43,12 +40,5 @@ public class Compiler {
         BrainfuckListenerImpl listener = new BrainfuckListenerImpl(writer, size);
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(listener,parseTree);
-    }
-    
-    private static int countArraySize(ParseTree parseTree) {
-        ArraySizeCounterListenerImpl listener = new ArraySizeCounterListenerImpl();
-        ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(listener,parseTree);
-        return listener.getSize();
     }
 }
